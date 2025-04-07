@@ -261,6 +261,11 @@ public class ParentsDialog extends javax.swing.JDialog {
         jSplitPaneKG.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jButtonSearchKG.setText("»ÕÀ");
+        jButtonSearchKG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSearchKGActionPerformed(evt);
+            }
+        });
 
         jLabelKG.setText("»ÕÀ »—ﬁ„ Ê·Ì «·«„—:");
 
@@ -386,6 +391,25 @@ public class ParentsDialog extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_jButtonSearchGradeActionPerformed
+
+    private void jButtonSearchKGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchKGActionPerformed
+        Parent parent = new Parent();
+        try{
+        parent.setParentID(Integer.parseInt(jTextFieldSearchKG.getText().toString().trim()));
+        int index =kgParents.indexOf(parent);
+        if(index<0)
+            index=0;
+        jTableKG.setRowSelectionInterval(index,index);
+            // Scroll to make sure the selected row is visible
+            Rectangle rect = jTableKG.getCellRect(index, 0, true);
+            jTableKG.scrollRectToVisible(rect);
+        } catch (NumberFormatException ex) {
+            jTableKG.setRowSelectionInterval(0,0);
+            // Scroll to make sure the selected row is visible
+            Rectangle rect = jTableKG.getCellRect(0, 0, true);
+            jTableKG.scrollRectToVisible(rect);
+        }
+    }//GEN-LAST:event_jButtonSearchKGActionPerformed
 
     public static void main(String args[]) {
 

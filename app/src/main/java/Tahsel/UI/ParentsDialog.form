@@ -272,6 +272,9 @@
                           <Properties>
                             <Property name="text" type="java.lang.String" value="&#x628;&#x62d;&#x62b;"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSearchKGActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabelKG">
                           <Properties>
