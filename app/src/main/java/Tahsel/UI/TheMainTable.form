@@ -206,9 +206,9 @@
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace pref="239" max="32767" attributes="0"/>
+                                      <EmptySpace pref="248" max="32767" attributes="0"/>
                                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="308" max="32767" attributes="0"/>
+                                      <EmptySpace pref="316" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -337,7 +337,7 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
                                       <Component id="jButtonAdd" min="-2" pref="42" max="-2" attributes="0"/>
-                                      <EmptySpace pref="358" max="32767" attributes="0"/>
+                                      <EmptySpace pref="368" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -464,10 +464,10 @@
                                   <Group type="102" attributes="0">
                                       <Component id="jButtonDeleteAllComments" min="-2" pref="126" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButtonDownload" min="-2" pref="93" max="-2" attributes="0"/>
+                                      <Component id="jButtonDownload" min="-2" pref="191" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Component id="jFileChooser1" pref="1078" max="32767" attributes="0"/>
+                                      <Component id="jFileChooser1" pref="1089" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                                   </Group>
@@ -482,7 +482,7 @@
                               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jFileChooser1" pref="440" max="32767" attributes="0"/>
+                                  <Component id="jFileChooser1" pref="470" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -516,7 +516,13 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="jButtonDownload">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="&#x62a;&#x62d;&#x645;&#x64a;&#x644; &#x645;&#x644;&#x641; "/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="cc" green="ff" red="cc" type="rgb"/>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="sansserif" size="18" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value=" &#x645;&#x644;&#x641; &#x645;&#x644;&#x62e;&#x635;  &#x627;&#x644;&#x62a;&#x62d;&#x635;&#x64a;&#x644;"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
                       <Events>
@@ -536,6 +542,37 @@
                 </Container>
               </SubComponents>
             </Container>
+            <Container class="javax.swing.JPanel" name="jPanel">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="&#x627;&#x644;&#x62a;&#x639;&#x644;&#x64a;&#x642;&#x627;&#x62a;">
+                    <Property name="tabTitle" type="java.lang.String" value="&#x627;&#x644;&#x62a;&#x639;&#x644;&#x64a;&#x642;&#x627;&#x62a;"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jTabbedPaneCommentsForUser" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jTabbedPaneCommentsForUser" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="javax.swing.JTabbedPane" name="jTabbedPaneCommentsForUser">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>
@@ -550,7 +587,7 @@
                   <Component id="jButtonDarkMode" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButtonLogOut" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

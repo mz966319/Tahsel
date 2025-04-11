@@ -1,6 +1,7 @@
 package Tahsel;
 
 import Tahsel.Objects.Parent;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,6 +51,11 @@ public class ExcelHelper {
         cell0.setCellValue((String) "«Ã„«·Ì «·„” Õﬁ");
         cell0 = row0.createCell(9);
         cell0.setCellValue((String) "’«›Ì «·„ »ﬁÌ");
+        cell0 = row0.createCell(10);
+        cell0.setCellValue((String) "«· ⁄·Ìﬁ");
+        cell0 = row0.createCell(11);
+        cell0.setCellValue((String) " «—ÌŒ «· Õ’Ì·");
+        
 
         int rownum = 1;
         for (Parent parent : parents) {
@@ -85,6 +91,15 @@ public class ExcelHelper {
             cell.setCellValue((Double) parent.getTotalOwed());
             cell = row.createCell(9);
             cell.setCellValue((Double) parent.getRemaining());
+            
+            
+            cell = row.createCell(10);
+            cell.setCellValue((String) parent.getComment());
+            
+            
+            cell.setCellStyle(cellStyle);
+            cell = row.createCell(11);
+            cell.setCellValue((Date) parent.getLastDateToCollect());
 
         }
         try {
@@ -93,6 +108,8 @@ public class ExcelHelper {
             workbook.write(out);
             out.close();
             System.out.println("xlsx written successfully on disk.");
+            Desktop.getDesktop().open(new File(pathToOutput));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

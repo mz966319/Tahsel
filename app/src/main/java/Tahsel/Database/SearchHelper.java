@@ -223,9 +223,7 @@ public class SearchHelper {
             resultSet.close();
         }
     }
-    
-    
-    
+  
     
     public static Map<Integer, ArrayList<Comment>> getComments() {
         try {
@@ -264,6 +262,59 @@ public class SearchHelper {
                 commentMap.put(parentID, new ArrayList<>());
             }
             commentMap.get(parentID).add(comment);
+            }
+
+            return commentMap;
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        } finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
+    }
+    
+    
+    
+    
+    public static Map<String, ArrayList<Comment>> getCommentsMapWithUser() {
+        try {
+            return PrivateGetCommentsMapWithUser();
+        } catch (Exception ex) {
+            Logger.getLogger(SearchHelper.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    private static Map<String, ArrayList<Comment>> PrivateGetCommentsMapWithUser() throws Exception {
+        connectdbTables();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM comments ORDER BY date_created DESC";
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+
+            resultSet = preparedStatement.executeQuery();  //create a method that returns this result set
+            Map<String, ArrayList<Comment>> commentMap = new HashMap<>();
+            
+            
+            while (resultSet.next()) {
+                Comment comment = new Comment();
+                comment.setParentID(resultSet.getInt("parent_id"));
+                comment.setComment(resultSet.getString("comment"));
+                comment.setCreatedBy(resultSet.getString("created_by"));
+                comment.setToGetCollected(resultSet.getDouble("to_collect"));
+                comment.setRemaining(resultSet.getDouble("remaining"));
+                comment.setTotalOwed(resultSet.getDouble("total_owed"));
+                comment.setDateToCollect(resultSet.getDate("date_to_collect"));
+                comment.setDateCreated(resultSet.getDate("date_created"));
+                String userName = comment.getCreatedBy();
+            if (!commentMap.containsKey(userName)) {
+                commentMap.put(userName, new ArrayList<>());
+            }
+            commentMap.get(userName).add(comment);
             }
 
             return commentMap;

@@ -447,11 +447,12 @@ public class ParentsDialog extends javax.swing.JDialog {
 
     public static DefaultTableModel createParentsTableModel(ArrayList<Parent> parents) {
         // Column names
-        String[] columnNames = {"„Ê⁄œ «· Õ’Ì·", "«· ⁄·Ìﬁ", "«Ã„«·Ì «·„œ›Ê⁄", "’«›Ì «·„ »ﬁÌ", "«Ã„«·Ì «·„” Õﬁ", "„»·€ «Œ— ”œ«œ", " «—ÌŒ «Œ— ”œ«œ", "«·’›Ê›", "«”„«¡ «·«»‰«¡", "«·«»‰«¡", "«”„ Ê·Ì «·«„—", "Ê·Ì «·«„—"};
+        String[] columnNames = {"„Ê⁄œ «· Õ’Ì·", "«· ⁄·Ìﬁ", "«Ã„«·Ì «·„œ›Ê⁄", "’«›Ì «·„ »ﬁÌ", "«Ã„«·Ì «·„” Õﬁ", "„»·€ «Œ— ”œ«œ", " «—ÌŒ «Œ— ”œ«œ", "«·’›Ê›", "«”„«¡ «·«»‰«¡", "«·«»‰«¡", "«”„ Ê·Ì «·«„—", "Ê·Ì «·«„—","#"};
         // Convert ArrayList to 2D Object array
-        Object[][] data = new Object[parents.size()][12];
+        Object[][] data = new Object[parents.size()][13];
         for (int i = 0; i < parents.size(); i++) {
 
+            data[i][12] = String.valueOf(i+1);
             data[i][11] = parents.get(i);
             data[i][10] = parents.get(i).getParentName();
             data[i][9] = parents.get(i).getNumberOfChildren();
@@ -482,6 +483,7 @@ public class ParentsDialog extends javax.swing.JDialog {
     public void formatAllTableTab(JTable table) {
         table.setRowHeight(30);
 
+        table.getColumnModel().getColumn(12).setPreferredWidth(15);
         table.getColumnModel().getColumn(11).setPreferredWidth(28);
         table.getColumnModel().getColumn(10).setPreferredWidth(165);
         table.getColumnModel().getColumn(9).setPreferredWidth(18);
@@ -505,6 +507,10 @@ public class ParentsDialog extends javax.swing.JDialog {
                     Parent p = (Parent) table.getValueAt(row, 11);
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
+                    if (column == 12) {
+                        label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+                    }
+                    
                     if (column == 10 || column == 1) {
                         label.setHorizontalAlignment(SwingConstants.RIGHT);
                     } else {

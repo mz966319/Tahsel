@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Tahsel.UI;
 
 import Tahsel.App;
@@ -14,17 +10,14 @@ import Tahsel.Objects.User;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,35 +31,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import javax.swing.BorderFactory;
-import javax.swing.JTable;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.Map;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
-/**
- *
- * @author Bat
- */
+
 public class TheMainTable extends javax.swing.JFrame {
 
     public static int ALL = 0;
@@ -95,6 +78,8 @@ public class TheMainTable extends javax.swing.JFrame {
         jFileChooser1.setFileFilter(filter);
         if (!getUserID().equals("100")) {
             this.jTabbedPaneMain.removeTabAt(1);
+            this.jTabbedPaneMain.removeTabAt(1);
+            this.jTabbedPaneMain.removeTabAt(1);
         }
         if (getUserID().equals("100")) {
             this.jButtonDownload.setEnabled(true);
@@ -119,39 +104,28 @@ public class TheMainTable extends javax.swing.JFrame {
             }
         });
 
-//        JLabel label = new JLabel(new ImageIcon("T:\\logo.png"));
-//        jPanelImage.add(label); 
         jLabel4.setIcon(new ImageIcon("T:\\logo.png"));
         
+        buildUserCommentsTab();
         
-        // Load the image
-        // Create a JPanel to display the image
-//        TheMainTable.this.jPanelImage = new JPanel() {
-//            @Override
-//            protected void paintComponent(Graphics g) {
-//                super.paintComponent(g);
-//                Image image = null;
-//                try {
-//                    image = ImageIO.read(new File("T:\\logo.png"));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                if (image != null) {
-//                    // Get the panel's size and image's size
-//                    int panelWidth = getWidth();
-//                    int panelHeight = getHeight();
-//                    int imageWidth = image.getWidth(this);
-//                    int imageHeight = image.getHeight(this);
-//
-//                    // Calculate the position to center the image
-//                    int x = (panelWidth - imageWidth) / 2;
-//                    int y = (panelHeight - imageHeight) / 2;
-//
-//                    // Draw the image centered
-//                    g.drawImage(image, x, y, this);
-//                }
-//            }
-//        };
+        
+        
+        
+        
+        for (Component comp : jFileChooser1.getComponents()) {
+    if (comp instanceof Container) {
+        for (Component sub : ((Container) comp).getComponents()) {
+            if (sub instanceof JButton) {
+                String text = ((JButton) sub).getText();
+                if ("Open".equals(text) || "Cancel".equals(text)) {
+                    ((Container) comp).remove(sub);
+                }
+            }
+        }
+    }
+}
+jFileChooser1.revalidate();
+jFileChooser1.repaint();
 
     }
 
@@ -190,6 +164,8 @@ public class TheMainTable extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jButtonDownload = new javax.swing.JButton();
         jButtonDeleteAllComments = new javax.swing.JButton();
+        jPanel = new javax.swing.JPanel();
+        jTabbedPaneCommentsForUser = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jButtonDarkMode = new javax.swing.JButton();
         jButtonLogOut = new javax.swing.JButton();
@@ -269,9 +245,9 @@ public class TheMainTable extends javax.swing.JFrame {
         jPanelImageLayout.setVerticalGroup(
             jPanelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelImageLayout.createSequentialGroup()
-                .addContainerGap(239, Short.MAX_VALUE)
+                .addContainerGap(248, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addContainerGap(308, Short.MAX_VALUE))
+                .addContainerGap(316, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelParentsGlobalLayout = new javax.swing.GroupLayout(jPanelParentsGlobal);
@@ -376,7 +352,7 @@ public class TheMainTable extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(79, 79, 79)
                 .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(358, Short.MAX_VALUE))
+                .addContainerGap(368, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -438,7 +414,9 @@ public class TheMainTable extends javax.swing.JFrame {
             }
         });
 
-        jButtonDownload.setText(" Õ„Ì· „·› ");
+        jButtonDownload.setBackground(new java.awt.Color(204, 255, 204));
+        jButtonDownload.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jButtonDownload.setText(" „·› „·Œ’  «· Õ’Ì·");
         jButtonDownload.setEnabled(false);
         jButtonDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,9 +442,9 @@ public class TheMainTable extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jButtonDeleteAllComments, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 1078, Short.MAX_VALUE)
+                        .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)))
                 .addGap(15, 15, 15))
@@ -477,7 +455,7 @@ public class TheMainTable extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                    .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,6 +475,21 @@ public class TheMainTable extends javax.swing.JFrame {
         );
 
         jTabbedPaneMain.addTab("—›⁄ „·›", jPanelUploadFile);
+
+        javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
+        jPanel.setLayout(jPanelLayout);
+        jPanelLayout.setHorizontalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPaneCommentsForUser)
+        );
+        jPanelLayout.setVerticalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLayout.createSequentialGroup()
+                .addComponent(jTabbedPaneCommentsForUser)
+                .addGap(0, 0, 0))
+        );
+
+        jTabbedPaneMain.addTab("«· ⁄·Ìﬁ« ", jPanel);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -534,7 +527,7 @@ public class TheMainTable extends javax.swing.JFrame {
                 .addComponent(jButtonDarkMode)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonLogOut)
-                .addContainerGap())
+                .addGap(5, 5, 5))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -642,7 +635,26 @@ public class TheMainTable extends javax.swing.JFrame {
         if (option == JFileChooser.APPROVE_OPTION) {
             File selectedFolder = folderChooser.getSelectedFile();
             File fileToSave = new File(selectedFolder, "tahsel.xlsx");
-            ExcelHelper.writeParentsToSheet(this.parentsAll, fileToSave.getAbsolutePath());
+            
+            
+            
+            Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+            ArrayList<Parent> newList = new ArrayList<>();
+            for (Parent parent : this.parentsAll) {
+                if (parent.getRemaining() > 0) { //for all 
+                    if (commentMap.get(parent.getParentID()) != null) {
+                        Comment lastComment = commentMap.get(parent.getParentID()).get(0);
+                        parent.setLastDateToCollect(lastComment.getDateToCollect());
+                        parent.setComment(lastComment.getComment());     
+                    }
+                    else{
+                        parent.setLastDateToCollect(null);
+                        parent.setComment("-");
+                    }
+                    newList.add(parent);
+                }
+            }            
+            ExcelHelper.writeParentsToSheet(newList, fileToSave.getAbsolutePath());
         }
     }//GEN-LAST:event_jButtonDownloadActionPerformed
 
@@ -782,35 +794,6 @@ public class TheMainTable extends javax.swing.JFrame {
         return model;
     }
 
-    public static DefaultTableModel createParentsTableModel(ArrayList<Parent> parents) {
-        String[] columnNames = {"„Ê⁄œ «· Õ’Ì·", "«· ⁄·Ìﬁ", "«Ã„«·Ì «·„œ›Ê⁄", "’«›Ì «·„ »ﬁÌ", "«Ã„«·Ì «·„” Õﬁ", "„»·€ «Œ— ”œ«œ", " «—ÌŒ «Œ— ”œ«œ", "«·’›Ê›", "«”„«¡ «·«»‰«¡", "«·«»‰«¡", "«”„ Ê·Ì «·«„—", "Ê·Ì «·«„—"};
-        Object[][] data = new Object[parents.size()][12];
-        for (int i = 0; i < parents.size(); i++) {
-
-            data[i][11] = parents.get(i);
-            data[i][10] = parents.get(i).getParentName();
-            data[i][9] = parents.get(i).getNumberOfChildren();
-            data[i][8] = parents.get(i).getChildrensNames();
-            data[i][7] = parents.get(i).getGrades();
-            String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(parents.get(i).getLastPaidDate());
-            data[i][6] = formattedDate;
-            data[i][5] = parents.get(i).getLastPaidMoney();
-            data[i][4] = parents.get(i).getTotalOwed();
-            data[i][3] = parents.get(i).getRemaining();
-            data[i][2] = parents.get(i).getTotalPaied();
-            data[i][1] = parents.get(i).getComment();
-            data[i][0] = parents.get(i).getLastDateToCollect();
-        }
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; //Make all cells non-editable
-            }
-        };
-        return model;
-    }
-
     private static void showDialog(javax.swing.JFrame parentFrame, String id) {
         User selectedUser = SearchHelper.getUserByID(id);
 
@@ -866,73 +849,6 @@ public class TheMainTable extends javax.swing.JFrame {
         dialog.setVisible(true);
     }
 
-    public void formatAllTableTab(JTable table) {
-//        table.setRowHeight(30);
-//
-//        table.getColumnModel().getColumn(11).setPreferredWidth(28);
-//        table.getColumnModel().getColumn(10).setPreferredWidth(165);
-//        table.getColumnModel().getColumn(9).setPreferredWidth(18);
-//        table.getColumnModel().getColumn(8).setPreferredWidth(145);
-//        table.getColumnModel().getColumn(7).setPreferredWidth(140);
-//        table.getColumnModel().getColumn(6).setPreferredWidth(62);
-//        table.getColumnModel().getColumn(5).setPreferredWidth(62);
-//        table.getColumnModel().getColumn(4).setPreferredWidth(65);
-//        table.getColumnModel().getColumn(3).setPreferredWidth(62);
-//        table.getColumnModel().getColumn(2).setPreferredWidth(62);
-//        table.getColumnModel().getColumn(1).setPreferredWidth(130);
-//        table.getColumnModel().getColumn(0).setPreferredWidth(62);
-//
-//        // Apply a custom renderer to all columns
-//        for (int col = 0; col < table.getColumnCount(); col++) {
-//            table.getColumnModel().getColumn(col).setCellRenderer(new DefaultTableCellRenderer() {
-//
-//                @Override
-//                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//                    JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//                    Parent p = (Parent) table.getValueAt(row, 11);
-//                    // Apply borders to all sides of the cell
-//                    label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
-//                    if (column == 10 || column == 1) {
-//                        label.setHorizontalAlignment(SwingConstants.RIGHT);
-//                    } else {
-//                        label.setHorizontalAlignment(SwingConstants.CENTER);
-//                    }
-//                    // Apply custom styling for the 3rd column
-//                    if (column == 2) {
-//                        int percentage = p.getPaymentStatusPercentage();
-//                        if (percentage < 50) {
-//                            label.setBackground(Color.RED);
-//                        } else if (percentage < 75) {
-//                            label.setBackground(Color.yellow);
-//                        } else {
-//                            label.setBackground(Color.green);
-//                        }
-//                    }
-//                    if (column == 4) {
-//                        double remainingOldFees = p.getRemainingOldFees();
-//                        System.out.println(p.getRemainingOldFees());
-//                        if (remainingOldFees > 0) {
-//                            label.setBackground(Color.gray);
-//                        } else {
-//                            label.setBackground(table.getBackground());
-//                        }
-//                    }
-//                    // Maintain selection styling
-//                    if (isSelected) {
-//                        label.setBackground(table.getSelectionBackground());
-//                        label.setForeground(table.getSelectionForeground());
-//                    } else {
-//                        if (column != 2 && column != 4) {
-//                            label.setBackground(table.getBackground());
-//                            label.setForeground(table.getForeground());
-//                        }
-//                    }
-//
-//                    return label;
-//                }
-//            });
-//        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
@@ -950,6 +866,7 @@ public class TheMainTable extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelUserNumber;
+    private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel4;
@@ -965,6 +882,7 @@ public class TheMainTable extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JTabbedPane jTabbedPaneCommentsForUser;
     private javax.swing.JTabbedPane jTabbedPaneMain;
     private javax.swing.JTable jTableUsers;
     private javax.swing.JTextField jTextFieldUserName;
@@ -1010,150 +928,17 @@ public class TheMainTable extends javax.swing.JFrame {
         return new ArrayList<Parent>();
     }
 
-//    public void setTabsData(ArrayList<Parent> parents) {
-//        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
-//        ArrayList<Parent> parentsWithComments = new ArrayList<Parent>();
-//
-//        //---------------- ALL ------------------------
-//        ArrayList<Parent> parentsKG = new ArrayList();
-//        ArrayList<Parent> parentsAll = new ArrayList();
-//
-//        //-------------- TO CALL -------------------
-//        ArrayList<Parent> parentsToCallKG = new ArrayList();
-//        ArrayList<Parent> parentsToCallAll = new ArrayList();
-//
-//        //-------------- OVERDUE ---------------------
-////        ArrayList<Parent> parentsOverDueKG = new ArrayList();
-////        ArrayList<Parent> parentsOverDueAll = new ArrayList();
-//
-//        //--------- UNDER COLLECTION
-//        ArrayList<Parent> parentsUnderCollectionKG = new ArrayList();
-//        ArrayList<Parent> parentsUnderCollectionAll = new ArrayList();
-//
-//        parents.sort(Comparator.comparing(Parent::getLastPaidDate));
-//        for (Parent parent : parents) {
-//            if (parent.getRemaining() > 0) { //for all
-//                parentsAll.add(parent);
-//                if (parent.getGrades().contains("KG")) {
-//                    parentsKG.add(parent);
-//                }
-//                if (commentMap.get(parent.getParentID()) != null) {
-//                    Comment lastComment = commentMap.get(parent.getParentID()).get(0);
-//                    parent.setLastDateToCollect(lastComment.getDateToCollect());
-//                    parent.setComment(lastComment.getComment());
-//                    parentsWithComments.add(parent);
-//                    if () {
-//                        parentsToCallAll.add(parent);
-//                        if (parent.getGrades().contains("KG")) {
-//                            parentsToCallKG.add(parent);
-//                        }
-//                    }
-//                } else {
-//                    parentsToCallAll.add(parent);
-//                    if (parent.getGrades().contains("KG")) {
-//                        parentsToCallKG.add(parent);
-//                    }
-//                }//add anyway
-//            }
-//
-//        }
-//        parentsWithComments.sort(Comparator.comparing(Parent::getLastDateToCollect));
-//        for (Parent parent : parentsWithComments) {
-//            if (commentMap.get(parent.getParentID()) != null) {
-//                if (parent.getLastDateToCollect().before(new Date())) {
-//                    if (parent.getRemaining() > 0) { //for all
-//                        parentsOverDueAll.add(parent);
-//                        if (parent.getGrades().contains("KG")) {
-//                            parentsOverDueKG.add(parent);
-//                        }
-//                    }
-//                } else if (parent.getLastDateToCollect().after(new Date())) {
-//                    if (parent.getRemaining() > 0) { //for all
-//                        parentsUnderCollectionAll.add(parent);
-//                        if (parent.getGrades().contains("KG")) {
-//                            parentsUnderCollectionKG.add(parent);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        //----------------------------All ----------------------------
-//        jTableAllParents.setModel(createParentsTableModel(parentsAll));
-//        formatAllTableTab(this.jTableAllParents);
-//        jTableKGParents.setModel(createParentsTableModel(parentsKG));
-//        formatAllTableTab(this.jTableKGParents);
-//
-//        //----------------------------TO CALL ----------------------------
-//        jTableToCallAll.setModel(createParentsTableModel(parentsToCallAll));
-//        formatAllTableTab(this.jTableToCallAll);
-//        jTableToCallKG.setModel(createParentsTableModel(parentsToCallKG));
-//        formatAllTableTab(this.jTableToCallKG);
-//
-////        parentsOverDueAll.sort(Comparator.comparing(Parent::getLastDateToCollect));
-////        parentsOverDueKG.sort(Comparator.comparing(Parent::getLastDateToCollect));
-//        //----------------------------OVER DUE ----------------------------
-//        jTableOverDueAll.setModel(createParentsTableModel(parentsOverDueAll));
-//        formatAllTableTab(this.jTableOverDueAll);
-//        jTableOverDueKG.setModel(createParentsTableModel(parentsOverDueKG));
-//        formatAllTableTab(this.jTableOverDueKG);
-//
-////        parentsUnderCollectionAll.sort(Comparator.comparing(Parent::getLastDateToCollect));
-////        parentsUnderCollectionKG.sort(Comparator.comparing(Parent::getLastDateToCollect));
-//        //----------------------------Under Collection ---------------------
-//        jTableUnderCollectionAll.setModel(createParentsTableModel(parentsUnderCollectionAll));
-//        formatAllTableTab(this.jTableUnderCollectionAll);
-//        jTableUnderCollectionKG.setModel(createParentsTableModel(parentsUnderCollectionKG));
-//        formatAllTableTab(this.jTableUnderCollectionKG);
-//    }
-//    public void setAllMouseListeners() {
-//
-//        //----------------------------All ----------------------------
-//        setMouseListenerToTable(this.jTableAllParents);
-//        setMouseListenerToTable(this.jTableKGParents);
-//
-//        //----------------------------TO CALL ----------------------------
-//        setMouseListenerToTable(this.jTableToCallAll);
-//        setMouseListenerToTable(this.jTableToCallKG);
-//
-//        //----------------------------OVER DUE ----------------------------
-//        setMouseListenerToTable(this.jTableOverDueAll);
-//        setMouseListenerToTable(this.jTableOverDueKG);
-//
-//        //----------------------------Under Collection ---------------------
-//        setMouseListenerToTable(this.jTableUnderCollectionAll);
-//        setMouseListenerToTable(this.jTableUnderCollectionKG);
-//
-//    }
-//    public void setMouseListenerToTable(JTable table) {
-//        table.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                // Get the selected row index
-//                int selectedRow = table.getSelectedRow();
-//
-//                // Check if a row is selected
-//                if (selectedRow != -1) {
-//                    // Get data from the selected row and print it
-//                    int id = (Integer) Integer.parseInt(table.getValueAt(selectedRow, 11).toString()); // ID column
-//                    Parent toFindParent = new Parent();
-//                    toFindParent.setParentID(id);
-//                    showCommentDialog(TheMainTable.this, TheMainTable.this.parentsAll.get(TheMainTable.this.parentsAll.indexOf(toFindParent)));
-//                    setTabsData(TheMainTable.this.parentsAll);
-//
-//                }
-//            }
-//        });
-//    }
-//    private void showCommentDialog(javax.swing.JFrame parentFrame, Parent parent) {
-//
-//        JDialog dialog = new JDialog(parentFrame, "Input Dialog", true);
-//        dialog.setSize(900, 900);
-//        dialog.setLocationRelativeTo(parentFrame);
-//        JPanelComment panel = new JPanelComment(parentFrame, user, dialog, parent,this);
-//
-//        dialog.add(panel, BorderLayout.CENTER);
-//        dialog.setTitle(" ⁄œÌ· «·„” Œœ„");
-//        dialog.setVisible(true);
-//    }
+    private void buildUserCommentsTab() {
+        Map<String, ArrayList<Comment>> comments= SearchHelper.getCommentsMapWithUser();
+        
+        
+        
+        for (Map.Entry<String, ArrayList<Comment>> entry : comments.entrySet()) {
+            String user = entry.getKey();
+            ArrayList<Comment> userComments = entry.getValue();
+            JPanelUserComments tab = new JPanelUserComments(userComments, this.user, this.parentsAll);
+            this.jTabbedPaneCommentsForUser.addTab(user, tab);
+        }
+
+    }
 }

@@ -15,6 +15,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -264,6 +266,7 @@ public class JPanelComment extends javax.swing.JPanel {
             double toGetCollected = Double.parseDouble(jTextFieldToCollect.getText().trim());
             double totalOwed = parent.getTotalOwed(), remaining = parent.getRemaining();
             Date dateToCollect = dateChooser.getDate();
+//            Date dateCreated = Date.from(LocalDate.now().minusDays(3).atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date dateCreated = new Date();
             Comment comment = new Comment(parentID, commentText, toGetCollected, dateToCollect, dateCreated, totalOwed, remaining, user.getName());
             if (!commentText.equals("")) {

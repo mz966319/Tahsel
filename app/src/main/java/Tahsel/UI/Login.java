@@ -117,7 +117,8 @@ public class Login extends javax.swing.JFrame {
             jButtonLogin.setForeground(Color.blue);
             CreateTextFile(id);
             this.dispose();
-            TheMainTable mainTable = new TheMainTable(toLoginUser);
+            
+            TheMainTable mainTable = new TheMainTable(SearchHelper.getUserByID(id));
             mainTable.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "«·»Ì«‰«  €Ì— ’ÕÌÕ…");
