@@ -1,9 +1,10 @@
 package Tahsel.UI;
 
+import Tahsel.Database.DatabaseHelper;
 import Tahsel.Database.SearchHelper;
 import Tahsel.Objects.Comment;
+import Tahsel.Objects.NoReplyParent;
 import Tahsel.Objects.Parent;
-import static Tahsel.UI.TheMainTable.ALL;
 import static Tahsel.UI.TheMainTable.user;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,13 +20,9 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
@@ -48,6 +45,7 @@ public class ParentsDialog extends javax.swing.JDialog {
 
     public ArrayList<Parent> parentsAll;
     public static Map<Integer, ArrayList<Comment>> commentMap;
+    ArrayList<NoReplyParent> noreplyParents;
 
     public static ArrayList<Parent> gradeParents;
     public static ArrayList<Parent> kgParents;
@@ -73,12 +71,23 @@ public class ParentsDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setResizable(true);  // Ensure the dialog is resizable
         this.jMenuBar1.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        this.jMenuColorsHelp.setPopupMenuVisible(false);
-        this.jMenuBar1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);;
-        this.jMenuColorsHelp.addMenuListener(new MenuListener() {
+        this.jMenuBar1.getComponent().setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        this.jMenuColorsMeaning.setPopupMenuVisible(false);
+        this.jMenuColorsMeaning.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
                 showColorHelpDialog();
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {}
+            @Override
+            public void menuCanceled(MenuEvent e) {}
+        });
+        this.jMenuHelp.setPopupMenuVisible(false);
+        this.jMenuHelp.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                showHelpDialog();
             }
             @Override
             public void menuDeselected(MenuEvent e) {}
@@ -111,10 +120,13 @@ public class ParentsDialog extends javax.swing.JDialog {
                     if (SwingUtilities.isLeftMouseButton(e)) {
                         if (e.getClickCount() == 2) {
                             showCommentDialog(ParentsDialog.this.parentFrame, ParentsDialog.this.gradeParents.get(ParentsDialog.this.gradeParents.indexOf(toFindParent)), selectedRow, 0);
+                            
                         }
                     }
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        copyToClipboard(ParentsDialog.this.gradeParents.get(ParentsDialog.this.gradeParents.indexOf(toFindParent)));
+                        
+                        showNoReplyDialog(ParentsDialog.this.parentFrame, ParentsDialog.this.gradeParents.get(ParentsDialog.this.gradeParents.indexOf(toFindParent)), selectedRow, 0);
+//                        copyToClipboard(ParentsDialog.this.gradeParents.get(ParentsDialog.this.gradeParents.indexOf(toFindParent)));
                     }
                 }
             }
@@ -136,23 +148,28 @@ public class ParentsDialog extends javax.swing.JDialog {
                         }
                     }
                     if (SwingUtilities.isRightMouseButton(e)) {
-                        copyToClipboard(ParentsDialog.this.kgParents.get(ParentsDialog.this.kgParents.indexOf(toFindParent)));
+                        showNoReplyDialog(ParentsDialog.this.parentFrame, ParentsDialog.this.kgParents.get(ParentsDialog.this.kgParents.indexOf(toFindParent)), selectedRow, 1);
                     }
                 }
             }
         });
-
         if (activeTab == 0 && !this.gradeParents.isEmpty()) {
+            if(rowToSelect>=this.gradeParents.size()){
+                rowToSelect-=1;
+            }
             jTableGrade.setRowSelectionInterval(rowToSelect, rowToSelect);
             // Scroll to make sure the selected row is visible
             Rectangle rect = jTableGrade.getCellRect(rowToSelect, 0, true);
             jTableGrade.scrollRectToVisible(rect);
         } else if (activeTab == 1 && !this.kgParents.isEmpty()) {
+            if(rowToSelect>=this.kgParents.size()){
+                rowToSelect-=1;
+            }
             jTableKG.setRowSelectionInterval(rowToSelect, rowToSelect);
-            // Scroll to make sure the selected row is visible
             Rectangle rect = jTableKG.getCellRect(rowToSelect, 0, true);
             jTableKG.scrollRectToVisible(rect);
         }
+        
         jTabbedPane.setSelectedIndex(activeTab);
         if(this.flag==TheMainTable.ALL){
             this.setTitle("All");
@@ -203,7 +220,8 @@ public class ParentsDialog extends javax.swing.JDialog {
         jScrollPaneKG = new javax.swing.JScrollPane();
         jTableKG = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuColorsHelp = new javax.swing.JMenu();
+        jMenuColorsMeaning = new javax.swing.JMenu();
+        jMenuHelp = new javax.swing.JMenu();
 
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
@@ -379,11 +397,15 @@ public class ParentsDialog extends javax.swing.JDialog {
 
         jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jMenuColorsHelp.setText("„⁄«‰Ì «·«·Ê«‰");
-        jMenuColorsHelp.setToolTipText("«÷€ÿ ·„⁄—›… „⁄«‰Ì «·Œ«‰«  «·„÷··… Ê”»»  ·ÊÌ‰Â«");
-        jMenuColorsHelp.setAutoscrolls(true);
-        jMenuColorsHelp.setHideActionText(true);
-        jMenuBar1.add(jMenuColorsHelp);
+        jMenuColorsMeaning.setText("„⁄«‰Ì «·«·Ê«‰");
+        jMenuColorsMeaning.setToolTipText("«÷€ÿ ·„⁄—›… „⁄«‰Ì «·Œ«‰«  «·„÷··… Ê”»»  ·ÊÌ‰Â«");
+        jMenuColorsMeaning.setAutoscrolls(true);
+        jMenuColorsMeaning.setHideActionText(true);
+        jMenuBar1.add(jMenuColorsMeaning);
+
+        jMenuHelp.setText("„”«⁄œ…");
+        jMenuHelp.setToolTipText("«÷€ÿ Â‰« ·„⁄—›… ŒÿÊ«  « „«„ «·„Â«„");
+        jMenuBar1.add(jMenuHelp);
 
         setJMenuBar(jMenuBar1);
 
@@ -451,56 +473,97 @@ public class ParentsDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonSearchKGActionPerformed
 
-    private void showColorHelpDialog() {
+    private void showHelpDialog() {
     // Create the dialog
-    JDialog helpDialog = new JDialog(this, "„⁄«‰Ì  ÷·Ì·«  «·Œ«‰« ", true);
-    helpDialog.setLayout(new BorderLayout());
-    
-    // Create panel for color explanations
-    JPanel colorPanel = new JPanel();
-    colorPanel.setLayout(new GridLayout(5, 2, 10, 10)); // 5 rows, 2 columns
-    colorPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-    colorPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    // Add color-label pairs
-    addColorExplanation(colorPanel, Color.gray, "(«Ã„«·Ì «·„” Õﬁ) Ê·Ì «·«„— ·œÌÂ —”Ê„ „ √Œ—… „‰ ”‰Ê«  ”«»ﬁ…");
-    addColorExplanation(colorPanel, new Color(128, 0, 128), "(Ê·Ì «·«„—)  „ «· Ê«’· „⁄ Ê·Ì «·«„— «ﬂÀ— „‰ „—… Ê·„ Ì”œœ ");
-    addColorExplanation(colorPanel, Color.GREEN, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ”œœ «ﬂÀ— „‰ 75% „‰ «·—”Ê„");
-    addColorExplanation(colorPanel, Color.YELLOW, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ”œœ «ﬂÀ— „‰ 50% Ê «ﬁ· „‰ 75% „‰ «·—”Ê„");
-    addColorExplanation(colorPanel, Color.RED, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ·„ Ì”œœ «ﬂÀ— „‰ 50% „‰ «·—”Ê„");
+        JDialog helpDialog = new JDialog(this, "„”«⁄œ…", true);
+        helpDialog.setLayout(new BorderLayout());
 
-    
-    // Add OK button
-    JButton okButton = new JButton("OK");
-    okButton.addActionListener(e -> helpDialog.dispose());
-    
-    // Add components to dialog
-    helpDialog.add(colorPanel, BorderLayout.CENTER);
-    helpDialog.add(okButton, BorderLayout.SOUTH);
-    
-    // Configure and show dialog
-    helpDialog.pack();
-    helpDialog.setLocationRelativeTo(this);
-    helpDialog.setVisible(true);
-}
+        // Create panel for color explanations
+        JPanel helpPanel = new JPanel();
+        helpPanel.setLayout(new GridLayout(6, 1, 10, 10)); // 5 rows, 1 columns
+        helpPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        helpPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
-private void addColorExplanation(JPanel panel, Color color, String explanation) {
-    // Create color swatch
-    JPanel colorSwatch = new JPanel();
-    colorSwatch.setBackground(color);
-    colorSwatch.setPreferredSize(new Dimension(20, 20));
-    colorSwatch.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    
-    // Create explanation label
-    JLabel explanationLabel = new JLabel(explanation);
-    explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-    explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    
-    
-    // Add to panel
-    panel.add(colorSwatch);
-    panel.add(explanationLabel);
-}
-    
+        // Create explanation label
+        JLabel explanationLabel =new JLabel("1- ·«÷«›…  ⁄·Ìﬁ ÃœÌœ ﬁ„ »«·÷€ÿ „— Ì‰ ⁄·Ì Ê·Ì «·«„— ·Ì „ › Õ ‰«›–… «÷«›…  ⁄·Ìﬁ");
+        explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        helpPanel.add(explanationLabel);
+        explanationLabel = new JLabel("2- ·«÷«›… Õ«·… ·« Ì—œ ·Ê·Ì «·«„— ﬁ„ »«·‰ﬁ— ⁄·Ì Ê·Ì «·«„— „—… Ê«Õœ… · ÕœÌœÂ À„ ﬁ„ »«·‰ﬁ— ⁄·Ì ‰›” Ê·Ì «·«„—Right-Click");
+        explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        helpPanel.add(explanationLabel);
+        explanationLabel = new JLabel("3- ·«“«·… Õ«·… ·« Ì—œ ·Ê·Ì «·«„—  ﬁ„ »«÷«›…  ⁄·Ìﬁ ÃœÌœ ");
+        explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        helpPanel.add(explanationLabel);
+
+
+
+        // Add OK button
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> helpDialog.dispose());
+
+        // Add components to dialog
+        helpDialog.add(helpPanel, BorderLayout.CENTER);
+        helpDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Configure and show dialog
+        helpDialog.pack();
+        helpDialog.setLocationRelativeTo(this);
+        helpDialog.setVisible(true);
+    }
+
+    private void addColorExplanation(JPanel panel, Color color, String explanation) {
+        // Create color swatch
+        JPanel colorSwatch = new JPanel();
+        colorSwatch.setBackground(color);
+        colorSwatch.setPreferredSize(new Dimension(10, 20));
+        colorSwatch.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        // Create explanation label
+        JLabel explanationLabel = new JLabel(explanation);
+        explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+
+
+        // Add to panel
+        panel.add(colorSwatch);
+        panel.add(explanationLabel);
+    }
+
+    private void showColorHelpDialog() {
+        // Create the dialog
+        JDialog helpDialog = new JDialog(this, "„⁄«‰Ì  ÷·Ì·«  «·Œ«‰« ", true);
+        helpDialog.setLayout(new BorderLayout());
+
+        // Create panel for color explanations
+        JPanel colorPanel = new JPanel();
+        colorPanel.setLayout(new GridLayout(6, 2, 10, 10)); // 5 rows, 2 columns
+        colorPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        colorPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        // Add color-label pairs
+        addColorExplanation(colorPanel, new Color(128, 0, 128), "(Ê·Ì «·«„—)  „ «· Ê«’· „⁄ Ê·Ì «·«„— «Œ— „— Ì‰ «Ê «ﬂÀ— ·œ›⁄ ‰›” ⁄„·Ì… «· Õ’Ì·");
+        addColorExplanation(colorPanel, new Color(67, 140, 217), "(«”„ Ê·Ì «·«„—) Ê·Ì «·«„— ·« Ì—œ ");
+        addColorExplanation(colorPanel, Color.gray, "(«Ã„«·Ì «·„” Õﬁ) Ê·Ì «·«„— ·œÌÂ —”Ê„ „ √Œ—… „‰ ”‰Ê«  ”«»ﬁ…");
+        addColorExplanation(colorPanel, Color.GREEN, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ”œœ «ﬂÀ— „‰ 75% „‰ «·—”Ê„");
+        addColorExplanation(colorPanel, Color.YELLOW, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ”œœ «ﬂÀ— „‰ 50% Ê «ﬁ· „‰ 75% „‰ «·—”Ê„");
+        addColorExplanation(colorPanel, Color.RED, "(«Ã„«·Ì «·„œ›Ê⁄) Ê·Ì «·«„— ·„ Ì”œœ «ﬂÀ— „‰ 50% „‰ «·—”Ê„");
+
+
+        // Add OK button
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> helpDialog.dispose());
+
+        // Add components to dialog
+        helpDialog.add(colorPanel, BorderLayout.CENTER);
+        helpDialog.add(okButton, BorderLayout.SOUTH);
+
+        // Configure and show dialog
+        helpDialog.pack();
+        helpDialog.setLocationRelativeTo(this);
+        helpDialog.setVisible(true);
+    } 
     
     public static void main(String args[]) {
 
@@ -572,8 +635,8 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void formatAllTableTab(JTable table) {
+        
         table.setRowHeight(30);
-
         table.getColumnModel().getColumn(12).setPreferredWidth(15);
         table.getColumnModel().getColumn(11).setPreferredWidth(28);
         table.getColumnModel().getColumn(10).setPreferredWidth(165);
@@ -596,8 +659,12 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     Parent p = (Parent) table.getValueAt(row, 11);
+                    NoReplyParent noReply = new NoReplyParent(p.getParentID());
+                    if(noreplyParents.contains(new NoReplyParent(p.getParentID()))){
+                        noReply= noreplyParents.get(noreplyParents.indexOf(new NoReplyParent(p.getParentID())));
+                    }
                     ArrayList<Comment> lastTwoComments = commentMap.getOrDefault(p.getParentID(), new ArrayList<>());
-
+                    
 //                    ArrayList<Comment> lastTwoComments = commentMap.get(p.getParentID());
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
@@ -629,12 +696,15 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
                             label.setBackground(table.getBackground());
                         }
                     }
-                    if(column ==11){
-                        if(p.getParentID()==1362){
-//                            System.out.println("------------>"+lastTwoComments.size());
-//                            System.out.println("------------>"+lastTwoComments.get(1).getComment());
-//                            System.out.println("------------>"+lastTwoComments.get(2).getComment());
+                    if(column ==10){
+                        if(noReply.isNoReplyFlag()){
+                                label.setBackground(new Color(67, 140, 217));
                         }
+                        else{
+                            label.setBackground(table.getBackground());
+                        }
+                    }
+                    if(column ==11){
                         if(!lastTwoComments.isEmpty() && lastTwoComments.size()>=2){
                             if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
                                 label.setBackground(new Color(128, 0, 128));
@@ -649,7 +719,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
                         label.setBackground(table.getSelectionBackground());
                         label.setForeground(table.getSelectionForeground());
                     } else {
-                        if (column != 2 && column != 4 && column != 11) {
+                        if (column != 2 && column != 4 && column != 10 && column != 11) {
                             label.setBackground(table.getBackground());
                             label.setForeground(table.getForeground());
                         }
@@ -674,6 +744,26 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
 
     }
     
+    private void showNoReplyDialog(JFrame parentFrame, Parent parent, int selectedRow, int tab) {
+                String message="Ê·Ì «·«„—: "+parent.getParentName()+"\n";
+                message+="Â· Ê·Ì «·«„— ·« Ì—œø";
+                int response = JOptionPane.showOptionDialog(null,
+                    message,
+                    "»«·—Ã«¡ «· √ﬂœ „‰ «Œ Ì«—ﬂ!",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new Object[]{"‰⁄„ Ê·Ì «·«„— ·« Ì—œ", "≈·€«¡"}, // Custom options
+                    "≈·€«¡" // Default selection
+                );
+                if (response == JOptionPane.YES_OPTION) {
+                    DatabaseHelper.updateNoReplyParent(new NoReplyParent(parent.getParentID(),user.getName(), new Date(),  true));
+                    parentFrame.dispose();
+                    ParentsDialog newParentsDialog = new ParentsDialog(parentFrame, true, ParentsDialog.this.parentsAll,ParentsDialog.this.commentMap, ParentsDialog.this.flag,selectedRow,tab);
+                    newParentsDialog.setVisible(true);
+                }
+                
+            }
     private static void copyToClipboard(Parent parent) {
 //        String stringToCopy = parent.getParentID()+"\t"+parent.getParentName()+"\t"+parent.getChildrensNames();
         String stringToCopy = parent.getRemaining()+"\t"+parent.getTotalPaied()+"\t"+parent.getTotalOwed()+"\t"+parent.getChildrensNames()+"\t"+parent.getParentName()+"\t" + parent.getParentID();
@@ -684,6 +774,8 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void setData() {
+        commentMap = SearchHelper.getComments();
+        noreplyParents = SearchHelper.getNoReplyParents();
         if (this.flag == TheMainTable.ALL) {
             showAllParents();
         } else if (this.flag == TheMainTable.TOCALL) {
@@ -694,9 +786,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
             showUnderCollectionParents();
         }
     }
-
     public void showAllParents() {
-        commentMap = SearchHelper.getComments();
         kgParents = new ArrayList();
         gradeParents = new ArrayList();
         ArrayList<Parent> parents = this.parentsAll;
@@ -722,7 +812,6 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showToCallParents() {
-        commentMap = SearchHelper.getComments();
         kgParents = new ArrayList();
         gradeParents = new ArrayList();
         ArrayList<Parent> parents = this.parentsAll;
@@ -757,7 +846,6 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showOverDueParents() {
-        commentMap = SearchHelper.getComments();
         ArrayList<Parent> parentsWithComments = new ArrayList<Parent>();
 
         kgParents = new ArrayList();
@@ -793,9 +881,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showUnderCollectionParents() {
-//        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
         ArrayList<Parent> parentsWithComments = new ArrayList<Parent>();
-
         kgParents = new ArrayList();
         gradeParents = new ArrayList();
         for (Parent parent : this.parentsAll) {
@@ -835,7 +921,8 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelKG;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuColorsHelp;
+    private javax.swing.JMenu jMenuColorsMeaning;
+    private javax.swing.JMenu jMenuHelp;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

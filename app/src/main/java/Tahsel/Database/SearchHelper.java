@@ -1,6 +1,7 @@
 package Tahsel.Database;
 
 import Tahsel.Objects.Comment;
+import Tahsel.Objects.NoReplyParent;
 import Tahsel.Objects.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -376,6 +377,81 @@ public class SearchHelper {
             if (preparedStatement != null) preparedStatement.close();
         }
     }
+    
+    //NOREPLYPARENTS
+    public static ArrayList<NoReplyParent> getNoReplyParents() {
+        try {
+            return privateGetNoReplyParents();
+        } catch (Exception ex) {
+            Logger.getLogger(SearchHelper.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    private static ArrayList<NoReplyParent> privateGetNoReplyParents() throws Exception {
+        connectdbTables();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM no_reply_parent";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            ArrayList<NoReplyParent> list = new ArrayList<>();
+            while (resultSet.next()) {
+                NoReplyParent parent = new NoReplyParent();
+                parent.setParentID(resultSet.getInt("parent_id"));
+                parent.setUpdatedBy(resultSet.getString("updated_by"));
+                parent.setDateUpdated(resultSet.getDate("date_updated"));
+                parent.setNoReplyFlag(resultSet.getBoolean("no_reply_flag"));
+                list.add(parent);
+            }
+            return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (resultSet != null) resultSet.close();
+            if (preparedStatement != null) preparedStatement.close();
+        }
+    }
+    
+    public static NoReplyParent getNoReplyParentByID(int parentID) {
+        try {
+            return privateGetNoReplyParentByID(parentID);
+        } catch (Exception ex) {
+            Logger.getLogger(SearchHelper.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
+    private static NoReplyParent privateGetNoReplyParentByID(int parentID) throws Exception {
+        connectdbTables();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM no_reply_parent WHERE parent_id = ?";
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, parentID);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                NoReplyParent parent = new NoReplyParent();
+                parent.setParentID(resultSet.getInt("parent_id"));
+                parent.setUpdatedBy(resultSet.getString("updated_by"));
+                parent.setDateUpdated(resultSet.getDate("date_updated"));
+                parent.setNoReplyFlag(resultSet.getBoolean("no_reply_flag"));
+                return parent;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (resultSet != null) resultSet.close();
+            if (preparedStatement != null) preparedStatement.close();
+        }
+    }
 
 }

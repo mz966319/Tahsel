@@ -1,6 +1,7 @@
 package Tahsel.Database;
 
 import Tahsel.Objects.Comment;
+import Tahsel.Objects.NoReplyParent;
 import Tahsel.Objects.User;
 import java.sql.Connection;
 import java.sql.Date;
@@ -111,8 +112,8 @@ public class DatabaseHelper {
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
+    
     // Delete all comments
-
     public static void deleteAllComments() {
         try {
             privateDeleteAllComments();
@@ -120,31 +121,68 @@ public class DatabaseHelper {
             Logger.getLogger(DatabaseHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     private static void privateDeleteAllComments() throws SQLException {
         // Connect to the database (make sure you have your connection logic in place)
         connectdbTables();
-
         // Disable auto-commit mode
         connection.setAutoCommit(false);
-
         // SQL statement to delete all rows from the comments table
         String deleteSQL = "DELETE FROM comments";
-
         // Prepare the statement
         PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL);
-
         // Execute the delete statement
         preparedStatement.executeUpdate();
-
         // Commit the changes (now that auto-commit is disabled)
         connection.commit();
-
         // Close the prepared statement
         preparedStatement.close();
-
         // Re-enable auto-commit mode if needed (optional, if you need auto-commit for future queries)
         connection.setAutoCommit(true);
     }
+    
+    //NOReplyParent
+    // Add
+    public static void addNoReplyParent(NoReplyParent parent) {
+        try {
+            privateAddNoReplyParent(parent);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    private static void privateAddNoReplyParent(NoReplyParent parent) throws SQLException {
+        connectdbTables();
+
+        String insertSQL = "INSERT INTO no_reply_parent (parent_id, updated_by, date_updated, no_reply_flag) VALUES (?, ?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);
+        preparedStatement.setInt(1, parent.getParentID());
+        preparedStatement.setString(2, parent.getUpdatedBy());
+        preparedStatement.setDate(3, new java.sql.Date(parent.getDateUpdated().getTime()));
+        preparedStatement.setBoolean(4, parent.isNoReplyFlag());  // true or false
+
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+    // Update
+    public static void updateNoReplyParent(NoReplyParent parent) {
+        try {
+            privateUpdateNoReplyParent(parent);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void privateUpdateNoReplyParent(NoReplyParent parent) throws SQLException {
+        connectdbTables();
+
+        String updateSQL = "UPDATE no_reply_parent SET updated_by = ?, date_updated = ?, no_reply_flag = ? WHERE parent_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+        preparedStatement.setString(1, parent.getUpdatedBy());
+        preparedStatement.setDate(2, new java.sql.Date(parent.getDateUpdated().getTime()));
+        preparedStatement.setBoolean(3, parent.isNoReplyFlag());
+        preparedStatement.setInt(4, parent.getParentID());
+
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
 }

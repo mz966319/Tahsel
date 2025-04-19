@@ -1,5 +1,8 @@
 package Tahsel;
 
+import Tahsel.Database.DatabaseHelper;
+import Tahsel.Database.SearchHelper;
+import Tahsel.Objects.NoReplyParent;
 import Tahsel.Objects.Parent;
 import java.awt.Desktop;
 import java.io.File;
@@ -118,64 +121,66 @@ public class ExcelHelper {
 
     public static ArrayList<Parent> getParentsFromSheet(String pathToInput) throws FileNotFoundException, IOException, ParseException {
         ArrayList<Parent> parents = new ArrayList<>();
+        ArrayList<NoReplyParent> noReplyParents = SearchHelper.getNoReplyParents();
         int count = 0;
+        
+        FileInputStream file = new FileInputStream(new File(pathToInput));
+        XSSFWorkbook workbook = new XSSFWorkbook(file);
+        XSSFSheet sheet = workbook.getSheetAt(0);
 
-            FileInputStream file = new FileInputStream(new File(pathToInput));
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-            XSSFSheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next();
+        while (count < 1000000000) //            while (rowIterator.hasNext())
+        {
+            if (!rowIterator.hasNext()) {
+                break;
+            }
+            count++;
+            Row row = rowIterator.next();
+            String childName = row.getCell(1).getStringCellValue().split(" ", 2)[0];
+            int parentID = (int) row.getCell(2).getNumericCellValue();
+            String parentName = row.getCell(3).getStringCellValue();
 
-            Iterator<Row> rowIterator = sheet.iterator();
-            rowIterator.next();
-            while (count < 1000000000) //            while (rowIterator.hasNext())
-            {
-                if (!rowIterator.hasNext()) {
-                    break;
+            String grades = row.getCell(4).getStringCellValue();
+            Date lastPaidDate;
+            if (row.getCell(5).getCellType() == Cell.CELL_TYPE_STRING) {
+                String string = "9/9/1999";
+                DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+                lastPaidDate = format.parse(string);
+            } else {lastPaidDate = row.getCell(5).getDateCellValue();}
+            double lastPaidMoney = row.getCell(6).getNumericCellValue();
+            double remaining = row.getCell(7).getNumericCellValue();
+            double remainingOldFees = row.getCell(8).getNumericCellValue();
+            double totalOwed = row.getCell(9).getNumericCellValue();
+
+            Parent parent = new Parent(parentID, parentName, grades, childName, lastPaidDate, lastPaidMoney, totalOwed, remaining,remainingOldFees);
+            if (parents.isEmpty() || !parents.contains(parent)) {
+                parents.add(parent);
+            } else {
+                int index = parents.indexOf(parent);
+
+                if (lastPaidDate.compareTo(parents.get(index).getLastPaidDate()) == 0) {
+                    parents.get(index).setLastPaidMoney(parents.get(index).getLastPaidMoney() + lastPaidMoney);
+                } else if (lastPaidDate.compareTo(parents.get(index).getLastPaidDate()) > 0) {
+                    parents.get(index).setLastPaidDate(lastPaidDate);
+                    parents.get(index).setLastPaidMoney(lastPaidMoney);
                 }
-                count++;
-                Row row = rowIterator.next();
-                String childName = row.getCell(1).getStringCellValue().split(" ", 2)[0];
-                int parentID = (int) row.getCell(2).getNumericCellValue();
-                String parentName = row.getCell(3).getStringCellValue();
-                
-                String grades = row.getCell(4).getStringCellValue();
-                Date lastPaidDate;
-                if (row.getCell(5).getCellType() == Cell.CELL_TYPE_STRING) {
-                    String string = "9/9/1999";
-                    DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
-                    lastPaidDate = format.parse(string);
-                } else {lastPaidDate = row.getCell(5).getDateCellValue();}
-                double lastPaidMoney = row.getCell(6).getNumericCellValue();
-                double remaining = row.getCell(7).getNumericCellValue();
-                double remainingOldFees = row.getCell(8).getNumericCellValue();
-                double totalOwed = row.getCell(9).getNumericCellValue();
-
-                Parent parent = new Parent(parentID, parentName, grades, childName, lastPaidDate, lastPaidMoney, totalOwed, remaining,remainingOldFees);
-                if (parents.isEmpty() || !parents.contains(parent)) {
-                    parents.add(parent);
-                } else {
-                    int index = parents.indexOf(parent);
-
-                    if (lastPaidDate.compareTo(parents.get(index).getLastPaidDate()) == 0) {
-                        parents.get(index).setLastPaidMoney(parents.get(index).getLastPaidMoney() + lastPaidMoney);
-                    } else if (lastPaidDate.compareTo(parents.get(index).getLastPaidDate()) > 0) {
-                        parents.get(index).setLastPaidDate(lastPaidDate);
-                        parents.get(index).setLastPaidMoney(lastPaidMoney);
-                    }
-                    parents.get(index).increaseNumberOfChildrenByOne();
-                    parents.get(index).setChildrensNames(parents.get(index).getChildrensNames() + ", " + childName);
-                    parents.get(index).setGrades(parents.get(index).getGrades() + ", " + grades);
-                    parents.get(index).setTotalOwed(parents.get(index).getTotalOwed() + totalOwed);
-                    parents.get(index).setRemaining(parents.get(index).getRemaining() + remaining);
-                    parents.get(index).setTotalPaied(parents.get(index).getTotalPaied()+ parent.getTotalPaied());
-
-                }
+                parents.get(index).increaseNumberOfChildrenByOne();
+                parents.get(index).setChildrensNames(parents.get(index).getChildrensNames() + ", " + childName);
+                parents.get(index).setGrades(parents.get(index).getGrades() + ", " + grades);
+                parents.get(index).setTotalOwed(parents.get(index).getTotalOwed() + totalOwed);
+                parents.get(index).setRemaining(parents.get(index).getRemaining() + remaining);
+                parents.get(index).setTotalPaied(parents.get(index).getTotalPaied()+ parent.getTotalPaied());
 
             }
-            System.out.println(parents.size());
-
-            file.close();
-        
-
+            if(!noReplyParents.contains(new NoReplyParent(parentID))){
+                NoReplyParent noReply = new NoReplyParent( parentID,  "Admin",  new Date(), false);
+                DatabaseHelper.addNoReplyParent(noReply);
+                noReplyParents.add(noReply);
+            }
+        }
+        System.out.println(parents.size());
+        file.close();
         return parents;
     }
 

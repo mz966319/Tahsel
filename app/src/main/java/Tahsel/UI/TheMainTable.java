@@ -669,7 +669,7 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
-        commentMap=SearchHelper.getComments();
+//        commentMap=SearchHelper.getComments();
         ParentsDialog dialog = new ParentsDialog(TheMainTable.this, false, parentsAll,commentMap, ALL, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
@@ -684,7 +684,7 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonAllActionPerformed
 
     private void jButtonToCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToCallActionPerformed
-        commentMap=SearchHelper.getComments();
+//        commentMap=SearchHelper.getComments();
         ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, TOCALL, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
@@ -699,7 +699,7 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonToCallActionPerformed
 
     private void jButtonOverDueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOverDueActionPerformed
-        commentMap=SearchHelper.getComments();
+//        commentMap=SearchHelper.getComments();
         ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, OVERDUE, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
@@ -714,7 +714,7 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonOverDueActionPerformed
 
     private void jButtonUnderCollectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUnderCollectionActionPerformed
-        commentMap=SearchHelper.getComments();
+//        commentMap=SearchHelper.getComments();
         ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, UNDERCOLLECTION, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {

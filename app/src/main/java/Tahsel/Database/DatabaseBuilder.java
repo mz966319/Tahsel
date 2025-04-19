@@ -17,6 +17,7 @@ public class DatabaseBuilder {
         try {
             createCommentsTable();
             createUsersTable();
+            createNoReplyParent();
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseBuilder.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,6 +82,34 @@ public class DatabaseBuilder {
         statement.close();
         resultSet.close();
 
+    }
+
+    public static void createNoReplyParent() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS no_reply_parent ("
+           + "parent_id INTEGER PRIMARY KEY, "
+           + "updated_by TEXT, "
+           + "date_updated DATE, "
+           + "no_reply_flag BOOLEAN DEFAULT 0);";
+        
+//        String sql = "CREATE TABLE IF NOT EXISTS no_reply_parent ("
+//                + "parent_id INTEGER PRIMARY KEY,"
+//                + "updated_by TEXT,"
+//                + "date_updated DATE);";
+
+        // Check if the table exists
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='no_reply_parent'");
+        if (!resultSet.next()) {
+            System.out.println("Building the no_reply_parent table...");
+            // Create the table
+            statement.execute(sql);
+        } else {
+            System.out.println("Table 'no_reply_parent' already exists.");
+        }
+
+        // Clean up
+        statement.close();
+        resultSet.close();
     }
 
 }

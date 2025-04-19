@@ -7,8 +7,10 @@ package Tahsel.UI;
 import Tahsel.Database.DatabaseHelper;
 import Tahsel.Database.SearchHelper;
 import Tahsel.Objects.Comment;
+import Tahsel.Objects.NoReplyParent;
 import Tahsel.Objects.Parent;
 import Tahsel.Objects.User;
+import static Tahsel.UI.TheMainTable.user;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Component;
@@ -62,8 +64,8 @@ public class JPanelComment extends javax.swing.JPanel {
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
         
-        // Calculate 45 days from today
-        calendar.add(Calendar.DAY_OF_MONTH, 45);
+        // Calculate 30 days from today
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
         maxDate = calendar.getTime();
 
         // Create and configure JDateChooser
@@ -304,10 +306,11 @@ public class JPanelComment extends javax.swing.JPanel {
                 this.jTextAreaComment.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             }
             else if(dateToCollect.after(maxDate)){
-                JOptionPane.showMessageDialog(this, "„Ê⁄œ «· Õ’Ì· ÌÃ» «‰ ·« Ì ⁄œÌ 45 ÌÊ„ „‰  «—ÌŒ «·ÌÊ„!"," Õ–Ì—!!",2);
+                JOptionPane.showMessageDialog(this, "„Ê⁄œ «· Õ’Ì· ÌÃ» «‰ ·« Ì ⁄œÌ 30 ÌÊ„ „‰  «—ÌŒ «·ÌÊ„!"," Õ–Ì—!!",2);
             }
             else{
                 DatabaseHelper.addComment(comment);
+                DatabaseHelper.updateNoReplyParent(new NoReplyParent(parent.getParentID(),user.getName(), new Date(),  false));
                 this.dialog.dispose();
                 this.parentsDialog.dispose();
                 ParentsDialog newParentsDialog = new ParentsDialog(parentsDialog.getParentFrame(), parentsDialog.isModel(), parentsDialog.getParentsAll(),parentsDialog.getCommentMap(), parentsDialog.getFlag(),rowToSelect,tabIndex);
