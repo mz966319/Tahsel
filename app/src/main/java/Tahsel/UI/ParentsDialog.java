@@ -8,7 +8,11 @@ import static Tahsel.UI.TheMainTable.user;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -26,13 +30,17 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -62,7 +70,20 @@ public class ParentsDialog extends javax.swing.JDialog {
         // Optionally, center the dialog on the screen
         this.setLocationRelativeTo(null);
         this.setResizable(true);  // Ensure the dialog is resizable
-
+        this.jMenuBar1.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.jMenuColorsHelp.setPopupMenuVisible(false);
+        this.jMenuBar1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);;
+        this.jMenuColorsHelp.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                showColorHelpDialog();
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {}
+            @Override
+            public void menuCanceled(MenuEvent e) {}
+        });
+                
 
         parentFrame = parent;
         this.parentsAll = parentsAll;
@@ -157,6 +178,7 @@ public class ParentsDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jPanel = new javax.swing.JPanel();
         jTabbedPane = new javax.swing.JTabbedPane();
         jPanelGrade = new javax.swing.JPanel();
@@ -177,6 +199,11 @@ public class ParentsDialog extends javax.swing.JDialog {
         jPanelKG2 = new javax.swing.JPanel();
         jScrollPaneKG = new javax.swing.JScrollPane();
         jTableKG = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuColorsHelp = new javax.swing.JMenu();
+
+        jRadioButtonMenuItem1.setSelected(true);
+        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -240,7 +267,7 @@ public class ParentsDialog extends javax.swing.JDialog {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
         );
 
         jSplitPane1.setRightComponent(jPanel3);
@@ -318,7 +345,7 @@ public class ParentsDialog extends javax.swing.JDialog {
         );
         jPanelKG2Layout.setVerticalGroup(
             jPanelKG2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneKG, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+            .addComponent(jScrollPaneKG, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
         );
 
         jSplitPaneKG.setRightComponent(jPanelKG2);
@@ -347,6 +374,16 @@ public class ParentsDialog extends javax.swing.JDialog {
             .addComponent(jTabbedPane)
         );
 
+        jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jMenuColorsHelp.setText("ãÚÇäí ÇáÇáæÇä");
+        jMenuColorsHelp.setToolTipText("ÇÖÛØ áãÚÑÝÉ ãÚÇäí ÇáÎÇäÇÊ ÇáãÖááÉ æÓÈÈ ÊáæíäåÇ");
+        jMenuColorsHelp.setAutoscrolls(true);
+        jMenuColorsHelp.setHideActionText(true);
+        jMenuBar1.add(jMenuColorsHelp);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -360,7 +397,7 @@ public class ParentsDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 359, Short.MAX_VALUE)
+            .addGap(0, 346, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, 0)
@@ -411,6 +448,57 @@ public class ParentsDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonSearchKGActionPerformed
 
+    private void showColorHelpDialog() {
+    // Create the dialog
+    JDialog helpDialog = new JDialog(this, "ãÚÇäí ÊÖáíáÇÊ ÇáÎÇäÇÊ", true);
+    helpDialog.setLayout(new BorderLayout());
+    
+    // Create panel for color explanations
+    JPanel colorPanel = new JPanel();
+    colorPanel.setLayout(new GridLayout(5, 2, 10, 10)); // 5 rows, 2 columns
+    colorPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    colorPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    // Add color-label pairs
+    addColorExplanation(colorPanel, Color.gray, "(ÇÌãÇáí ÇáãÓÊÍÞ) æáí ÇáÇãÑ áÏíå ÑÓæã ãÊÃÎÑÉ ãä ÓäæÇÊ ÓÇÈÞÉ");
+    addColorExplanation(colorPanel, new Color(128, 0, 128), "(æáí ÇáÇãÑ) Êã ÇáÊæÇÕá ãÚ æáí ÇáÇãÑ ÇßËÑ ãä ãÑÉ æáã íÓÏÏ ");
+    addColorExplanation(colorPanel, Color.GREEN, "(ÇÌãÇáí ÇáãÏÝæÚ) æáí ÇáÇãÑ ÓÏÏ ÇßËÑ ãä 75% ãä ÇáÑÓæã");
+    addColorExplanation(colorPanel, Color.YELLOW, "(ÇÌãÇáí ÇáãÏÝæÚ) æáí ÇáÇãÑ ÓÏÏ ÇßËÑ ãä 50% æ ÇÞá ãä 75% ãä ÇáÑÓæã");
+    addColorExplanation(colorPanel, Color.RED, "(ÇÌãÇáí ÇáãÏÝæÚ) æáí ÇáÇãÑ áã íÓÏÏ ÇßËÑ ãä 50% ãä ÇáÑÓæã");
+
+    
+    // Add OK button
+    JButton okButton = new JButton("OK");
+    okButton.addActionListener(e -> helpDialog.dispose());
+    
+    // Add components to dialog
+    helpDialog.add(colorPanel, BorderLayout.CENTER);
+    helpDialog.add(okButton, BorderLayout.SOUTH);
+    
+    // Configure and show dialog
+    helpDialog.pack();
+    helpDialog.setLocationRelativeTo(this);
+    helpDialog.setVisible(true);
+}
+
+private void addColorExplanation(JPanel panel, Color color, String explanation) {
+    // Create color swatch
+    JPanel colorSwatch = new JPanel();
+    colorSwatch.setBackground(color);
+    colorSwatch.setPreferredSize(new Dimension(20, 20));
+    colorSwatch.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    
+    // Create explanation label
+    JLabel explanationLabel = new JLabel(explanation);
+    explanationLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+    explanationLabel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    
+    
+    // Add to panel
+    panel.add(colorSwatch);
+    panel.add(explanationLabel);
+}
+    
+    
     public static void main(String args[]) {
 
         try {
@@ -505,6 +593,7 @@ public class ParentsDialog extends javax.swing.JDialog {
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     Parent p = (Parent) table.getValueAt(row, 11);
+                    ArrayList<Comment> lastTwoComments = SearchHelper.getTopTwoCommentsByParent(p.getParentID());
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
                     if (column == 12) {
@@ -529,10 +618,19 @@ public class ParentsDialog extends javax.swing.JDialog {
                     }
                     if (column == 4) {
                         double remainingOldFees = p.getRemainingOldFees();
-                        System.out.println(p.getRemainingOldFees());
                         if (remainingOldFees > 0) {
                             label.setBackground(Color.gray);
                         } else {
+                            label.setBackground(table.getBackground());
+                        }
+                    }
+                    if(column ==11){
+                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
+                            if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
+                                label.setBackground(new Color(128, 0, 128));
+                            }
+                        }
+                        else{
                             label.setBackground(table.getBackground());
                         }
                     }
@@ -541,7 +639,7 @@ public class ParentsDialog extends javax.swing.JDialog {
                         label.setBackground(table.getSelectionBackground());
                         label.setForeground(table.getSelectionForeground());
                     } else {
-                        if (column != 2 && column != 4) {
+                        if (column != 2 && column != 4 && column != 11) {
                             label.setBackground(table.getBackground());
                             label.setForeground(table.getForeground());
                         }
@@ -726,6 +824,8 @@ public class ParentsDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonSearchKG;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelKG;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuColorsHelp;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -733,6 +833,7 @@ public class ParentsDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelGrade;
     private javax.swing.JPanel jPanelKG;
     private javax.swing.JPanel jPanelKG2;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneKG;
     private javax.swing.JSplitPane jSplitPane1;

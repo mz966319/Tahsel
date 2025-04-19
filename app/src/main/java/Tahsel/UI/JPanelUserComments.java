@@ -441,7 +441,7 @@ public class JPanelUserComments extends javax.swing.JPanel {
     public void formatTable(JTable table) {
         table.setRowHeight(25);
 
-        table.getColumnModel().getColumn(5).setPreferredWidth(10);
+        table.getColumnModel().getColumn(7).setPreferredWidth(10);
         table.getColumnModel().getColumn(6).setPreferredWidth(20);
         table.getColumnModel().getColumn(5).setPreferredWidth(10);
 //        table.getColumnModel().getColumn(5).setPreferredWidth(10);
@@ -458,6 +458,8 @@ public class JPanelUserComments extends javax.swing.JPanel {
                 @Override
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    int parentID = (int) table.getValueAt(row, 6);
+                    ArrayList<Comment> lastTwoComments = SearchHelper.getTopTwoCommentsByParent(parentID);
 
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
@@ -466,14 +468,34 @@ public class JPanelUserComments extends javax.swing.JPanel {
                     } else {
                         label.setHorizontalAlignment(SwingConstants.RIGHT);
                     }
+//                    if(column ==11){
+                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
+                            if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
+                                label.setBackground(new Color(128, 0, 128));
+                            }
+                        }
+                        else{
+                            label.setBackground(table.getBackground());
+                            label.setForeground(table.getForeground());
+
+                        }
+//                    }
 
                     // Maintain selection styling
                     if (isSelected) {
                         label.setBackground(table.getSelectionBackground());
                         label.setForeground(table.getSelectionForeground());
                     } else {
-                        label.setBackground(table.getBackground());
-                        label.setForeground(table.getForeground());
+                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
+                            if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
+                                label.setBackground(new Color(227, 172, 227));
+                            }
+                        }
+                        else{
+                            label.setBackground(table.getBackground());
+                            label.setForeground(table.getForeground());
+
+                        }
                     }
 
                     return label;
@@ -571,6 +593,8 @@ public class JPanelUserComments extends javax.swing.JPanel {
                 @Override
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//                    Parent p = (Parent) table.getValueAt(row, 11)
+//                    ArrayList<Comment> lastTwoComments = SearchHelper.getTopTwoCommentsByParent(p.getParentID());
 
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));

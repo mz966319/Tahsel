@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -37,6 +38,7 @@ public class JPanelComment extends javax.swing.JPanel {
     javax.swing.JFrame parentFrame;
     JDialog dialog;
     public static User user;
+    Date maxDate;
     JDateChooser dateChooser;
     private Parent parent;
     ParentsDialog parentsDialog;
@@ -54,12 +56,27 @@ public class JPanelComment extends javax.swing.JPanel {
         this.rowToSelect=rowToSelect;
         this.parentsDialog = parentsDialog;
         jPanelDate.setLayout(new FlowLayout()); // Ensure proper layout
+        jTextAreaComment.setRows(1); // Sets to 8 rows high
+
+        // Get today's date
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+        
+        // Calculate 45 days from today
+        calendar.add(Calendar.DAY_OF_MONTH, 45);
+        maxDate = calendar.getTime();
 
         // Create and configure JDateChooser
         dateChooser = new JDateChooser();
         dateChooser.setDate(new Date()); // Set default date
         dateChooser.setDateFormatString("yyyy-MM-dd"); // Set date format
         dateChooser.setPreferredSize(new Dimension(150, 30)); // Set preferred size
+        
+         
+        
+        // Set the date range
+        dateChooser.setSelectableDateRange(today, maxDate);
+        
         jPanelDate.add(dateChooser);
 
         this.jLabelParentID.setText(parent.getParentID() + "");
@@ -98,7 +115,6 @@ public class JPanelComment extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableComments = new javax.swing.JTable();
 
-        jSplitPane1.setDividerSize(10);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -111,6 +127,11 @@ public class JPanelComment extends javax.swing.JPanel {
 
         jTextFieldParentName.setEditable(false);
         jTextFieldParentName.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextFieldParentName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldParentNameActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("«· ⁄·Ìﬁ:");
 
@@ -122,7 +143,6 @@ public class JPanelComment extends javax.swing.JPanel {
         jTextAreaComment.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jTextAreaComment.setInheritsPopupMenu(true);
         jTextAreaComment.setMinimumSize(new java.awt.Dimension(13, 80));
-        jTextAreaComment.setPreferredSize(new java.awt.Dimension(232, 80));
         jScrollPane2.setViewportView(jTextAreaComment);
 
         jLabel8.setText("«·„»·€ «·„—«œ  Õ’Ì·Â:");
@@ -205,8 +225,8 @@ public class JPanelComment extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextFieldParentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jTextFieldParentName, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -261,30 +281,46 @@ public class JPanelComment extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
+            this.jTextAreaComment.setBorder(BorderFactory.createLineBorder(null));
             int parentID = parent.getParentID();
-            String commentText = jTextAreaComment.getText().toString();
+            String commentText = jTextAreaComment.getText().trim();
             double toGetCollected = Double.parseDouble(jTextFieldToCollect.getText().trim());
             double totalOwed = parent.getTotalOwed(), remaining = parent.getRemaining();
             Date dateToCollect = dateChooser.getDate();
 //            Date dateCreated = Date.from(LocalDate.now().minusDays(3).atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date dateCreated = new Date();
             Comment comment = new Comment(parentID, commentText, toGetCollected, dateToCollect, dateCreated, totalOwed, remaining, user.getName());
-            if (!commentText.equals("")) {
+            if (commentText.equals("")) {
+                JOptionPane.showMessageDialog(this, "«ﬂ »  ⁄·Ìﬁ");
+                this.jTextAreaComment.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            }
+            else if(commentText.contains(" ⁄Âœ") && commentText.length()<10){
+//                JOptionPane.show
+                JOptionPane.showMessageDialog(this, "»—Ã«¡ ﬂ «»…  ›«’Ì· «· ⁄Âœ „⁄ ﬂ «»… «· «—ÌŒ «·’ÕÌÕ ·· ⁄Âœ \n ﬂ·„…  ⁄Âœ ·ÊÕœÂ ·«  ⁄‰Ì ‘Ì....."," Õ–Ì—!!",2);
+                this.jTextAreaComment.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            }
+            else if((commentText.contains("·« Ì—œ")||commentText.contains("·«  —œ")||commentText.contains("·« —œ")||commentText.contains("·« ÌÊÃœ —œ")||commentText.contains("·« Ì „ «·—œ")||commentText.contains("·„ Ì „ «·—œ")||commentText.contains("„‘ »Ì—œ")) && commentText.length()<12){
+                JOptionPane.showMessageDialog(this, "›Ì Õ«· ⁄œ„ «·—œ ·« Ì „  ”ÃÌ·  ⁄·Ìﬁ Ê Ì „ „Õ«Ê·… «·« ’«· „—… «Œ—Ì Õ Ì Ì „ «Œ– «·—œ „‰ Ê·Ì «·«„— À„ Ì „  ”ÃÌ·Â"," Õ–Ì—!!",2);
+                this.jTextAreaComment.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            }
+            else if(dateToCollect.after(maxDate)){
+                JOptionPane.showMessageDialog(this, "„Ê⁄œ «· Õ’Ì· ÌÃ» «‰ ·« Ì ⁄œÌ 45 ÌÊ„ „‰  «—ÌŒ «·ÌÊ„!"," Õ–Ì—!!",2);
+            }
+            else{
                 DatabaseHelper.addComment(comment);
                 this.dialog.dispose();
                 this.parentsDialog.dispose();
                 ParentsDialog newParentsDialog = new ParentsDialog(parentsDialog.getParentFrame(), parentsDialog.isModel(), parentsDialog.getParentsAll(), parentsDialog.getFlag(),rowToSelect,tabIndex);
                 newParentsDialog.setVisible(true);
-                
-                
-                
             }
-            else
-                JOptionPane.showMessageDialog(this, "«ﬂ »  ⁄·Ìﬁ");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "«·„»·€ «·„—«œ  Õ’Ì·Â ÌÃ» «‰ ÌﬂÊ‰ —ﬁ„ ›ﬁÿ");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextFieldParentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldParentNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldParentNameActionPerformed
 
     public static DefaultTableModel createCommentsTableModel(int id) {
         ArrayList<Comment> comments = SearchHelper.getCommentsByParentID(id);

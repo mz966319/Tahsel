@@ -327,5 +327,55 @@ public class SearchHelper {
             resultSet.close();
         }
     }
+    
+    
+    public static ArrayList<Comment> getTopTwoCommentsByParent(int parentID) {
+        try {
+            return fetchTopTwoCommentsByParent(parentID);
+        } catch (Exception ex) {
+            Logger.getLogger(SearchHelper.class.getName()).log(Level.SEVERE, null, ex);
+            return new ArrayList<>();
+        }
+    }
+
+    private static ArrayList<Comment> fetchTopTwoCommentsByParent(int parentID) throws Exception {
+        connectdbTables();  // Your DB connection method
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        String sql = "SELECT * FROM comments WHERE parent_id = ? ORDER BY date_created DESC LIMIT 2";
+
+        ArrayList<Comment> topTwo = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, parentID); // ? bind the parent_id
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Comment comment = new Comment();
+                comment.setParentID(resultSet.getInt("parent_id"));
+                comment.setComment(resultSet.getString("comment"));
+                comment.setCreatedBy(resultSet.getString("created_by"));
+                comment.setToGetCollected(resultSet.getDouble("to_collect"));
+                comment.setRemaining(resultSet.getDouble("remaining"));
+                comment.setTotalOwed(resultSet.getDouble("total_owed"));
+                comment.setDateToCollect(resultSet.getDate("date_to_collect"));
+                comment.setDateCreated(resultSet.getDate("date_created"));
+
+                topTwo.add(comment);
+            }
+
+            return topTwo;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (resultSet != null) resultSet.close();
+            if (preparedStatement != null) preparedStatement.close();
+        }
+    }
+
 
 }
