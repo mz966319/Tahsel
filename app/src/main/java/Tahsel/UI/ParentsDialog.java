@@ -47,6 +47,8 @@ import javax.swing.table.DefaultTableModel;
 public class ParentsDialog extends javax.swing.JDialog {
 
     public ArrayList<Parent> parentsAll;
+    public static Map<Integer, ArrayList<Comment>> commentMap;
+
     public static ArrayList<Parent> gradeParents;
     public static ArrayList<Parent> kgParents;
     public static int flag;
@@ -55,7 +57,7 @@ public class ParentsDialog extends javax.swing.JDialog {
     public static int rowToSelect;
     public static int activeTab;
 
-    public ParentsDialog(javax.swing.JFrame parent, boolean modal, ArrayList<Parent> parentsAll, int flag, int rowToSelect, int activeTab) {
+    public ParentsDialog(javax.swing.JFrame parent, boolean modal, ArrayList<Parent> parentsAll, Map<Integer, ArrayList<Comment>> commentMap, int flag, int rowToSelect, int activeTab) {
         super(parent, modal);
         initComponents();
         this.rowToSelect = rowToSelect;
@@ -87,6 +89,7 @@ public class ParentsDialog extends javax.swing.JDialog {
 
         parentFrame = parent;
         this.parentsAll = parentsAll;
+        this.commentMap=commentMap;
         this.flag = flag;
         this.model = model;
         setData();
@@ -521,7 +524,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ParentsDialog dialog = new ParentsDialog(new javax.swing.JFrame(), true, gradeParents, flag, rowToSelect, activeTab);
+                ParentsDialog dialog = new ParentsDialog(new javax.swing.JFrame(), true, gradeParents, commentMap,flag, rowToSelect, activeTab);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -593,7 +596,9 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     Parent p = (Parent) table.getValueAt(row, 11);
-                    ArrayList<Comment> lastTwoComments = SearchHelper.getTopTwoCommentsByParent(p.getParentID());
+                    ArrayList<Comment> lastTwoComments = commentMap.getOrDefault(p.getParentID(), new ArrayList<>());
+
+//                    ArrayList<Comment> lastTwoComments = commentMap.get(p.getParentID());
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
                     if (column == 12) {
@@ -625,7 +630,12 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
                         }
                     }
                     if(column ==11){
-                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
+                        if(p.getParentID()==1362){
+//                            System.out.println("------------>"+lastTwoComments.size());
+//                            System.out.println("------------>"+lastTwoComments.get(1).getComment());
+//                            System.out.println("------------>"+lastTwoComments.get(2).getComment());
+                        }
+                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()>=2){
                             if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
                                 label.setBackground(new Color(128, 0, 128));
                             }
@@ -686,7 +696,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showAllParents() {
-        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+        commentMap = SearchHelper.getComments();
         kgParents = new ArrayList();
         gradeParents = new ArrayList();
         ArrayList<Parent> parents = this.parentsAll;
@@ -712,7 +722,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showToCallParents() {
-        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+        commentMap = SearchHelper.getComments();
         kgParents = new ArrayList();
         gradeParents = new ArrayList();
         ArrayList<Parent> parents = this.parentsAll;
@@ -747,7 +757,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showOverDueParents() {
-        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+        commentMap = SearchHelper.getComments();
         ArrayList<Parent> parentsWithComments = new ArrayList<Parent>();
 
         kgParents = new ArrayList();
@@ -783,7 +793,7 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     }
 
     public void showUnderCollectionParents() {
-        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+//        Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
         ArrayList<Parent> parentsWithComments = new ArrayList<Parent>();
 
         kgParents = new ArrayList();
@@ -848,6 +858,11 @@ private void addColorExplanation(JPanel panel, Color color, String explanation) 
     public ArrayList<Parent> getParentsAll() {
         return parentsAll;
     }
+
+    public static Map<Integer, ArrayList<Comment>> getCommentMap() {
+        return commentMap;
+    }
+    
 
     public static int getFlag() {
         return flag;

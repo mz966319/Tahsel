@@ -60,6 +60,7 @@ public class TheMainTable extends javax.swing.JFrame {
     public static boolean isLightMode = true;
     public static User user;
     ArrayList<Parent> parentsAll;
+    public static Map<Integer, ArrayList<Comment>> commentMap;
 
     public TheMainTable(User user) {
         ImageIcon highResIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("T:\\logo.png"));
@@ -72,6 +73,7 @@ public class TheMainTable extends javax.swing.JFrame {
         jTableUsers.setModel(createUsersTableModel());
 
         this.parentsAll = readExcelFileForParents();
+        commentMap=SearchHelper.getComments();
 
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files (.xlsx)", "xlsx");
         jFileChooser1.setAcceptAllFileFilterUsed(false);
@@ -638,7 +640,7 @@ jFileChooser1.repaint();
             
             
             
-            Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
+//            Map<Integer, ArrayList<Comment>> commentMap = SearchHelper.getComments();
             ArrayList<Parent> newList = new ArrayList<>();
             for (Parent parent : this.parentsAll) {
                 if (parent.getRemaining() > 0) { //for all 
@@ -667,8 +669,8 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
-
-        ParentsDialog dialog = new ParentsDialog(TheMainTable.this, false, parentsAll, ALL, 0, 0);
+        commentMap=SearchHelper.getComments();
+        ParentsDialog dialog = new ParentsDialog(TheMainTable.this, false, parentsAll,commentMap, ALL, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -682,7 +684,8 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonAllActionPerformed
 
     private void jButtonToCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonToCallActionPerformed
-        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll, TOCALL, 0, 0);
+        commentMap=SearchHelper.getComments();
+        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, TOCALL, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -696,7 +699,8 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonToCallActionPerformed
 
     private void jButtonOverDueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOverDueActionPerformed
-        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll, OVERDUE, 0, 0);
+        commentMap=SearchHelper.getComments();
+        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, OVERDUE, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -710,7 +714,8 @@ jFileChooser1.repaint();
     }//GEN-LAST:event_jButtonOverDueActionPerformed
 
     private void jButtonUnderCollectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUnderCollectionActionPerformed
-        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll, UNDERCOLLECTION, 0, 0);
+        commentMap=SearchHelper.getComments();
+        ParentsDialog dialog = new ParentsDialog(this, true, parentsAll,commentMap, UNDERCOLLECTION, 0, 0);
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -936,7 +941,7 @@ jFileChooser1.repaint();
         for (Map.Entry<String, ArrayList<Comment>> entry : comments.entrySet()) {
             String user = entry.getKey();
             ArrayList<Comment> userComments = entry.getValue();
-            JPanelUserComments tab = new JPanelUserComments(userComments, this.user, this.parentsAll);
+            JPanelUserComments tab = new JPanelUserComments(userComments, this.user, this.parentsAll,this.commentMap);
             this.jTabbedPaneCommentsForUser.addTab(user, tab);
         }
 

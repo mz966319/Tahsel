@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class dbConnection {
 
-    private static final String SQCONN = "jdbc:sqlite:T:\\Database\\sunrise.sqlite";
-//    private static final String SQCONN = "jdbc:sqlite:Database/sunrise.sqlite";
+//    private static final String SQCONN = "jdbc:sqlite:T:\\Database\\sunrise.sqlite";
+    private static final String SQCONN = "jdbc:sqlite:Database/sunrise.sqlite";
 
     public static Connection getConnection() throws SQLException {
         // Define the path for the "Sunrise" folder inside Documents

@@ -310,7 +310,7 @@ public class JPanelComment extends javax.swing.JPanel {
                 DatabaseHelper.addComment(comment);
                 this.dialog.dispose();
                 this.parentsDialog.dispose();
-                ParentsDialog newParentsDialog = new ParentsDialog(parentsDialog.getParentFrame(), parentsDialog.isModel(), parentsDialog.getParentsAll(), parentsDialog.getFlag(),rowToSelect,tabIndex);
+                ParentsDialog newParentsDialog = new ParentsDialog(parentsDialog.getParentFrame(), parentsDialog.isModel(), parentsDialog.getParentsAll(),parentsDialog.getCommentMap(), parentsDialog.getFlag(),rowToSelect,tabIndex);
                 newParentsDialog.setVisible(true);
             }
         } catch (NumberFormatException ex) {

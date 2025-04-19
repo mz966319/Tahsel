@@ -9,7 +9,6 @@ import Tahsel.Objects.Comment;
 import Tahsel.Objects.Parent;
 import Tahsel.Objects.User;
 import com.toedter.calendar.JDateChooser;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,11 +16,10 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -42,12 +40,15 @@ public class JPanelUserComments extends javax.swing.JPanel {
     JDateChooser dateChooserFromDate, dateChooserToDate;
     User user;
     ArrayList<Parent> parentsList;
+    Map<Integer, ArrayList<Comment>> commentMap;
     
-    public JPanelUserComments(ArrayList<Comment> comments, User user, ArrayList<Parent> parentsList) {
+    public JPanelUserComments(ArrayList<Comment> comments, User user, ArrayList<Parent> parentsList,Map<Integer, ArrayList<Comment>> commentMap) {
         initComponents();
         this.user = user;
         this.comments = comments;
         this.parentsList = parentsList;
+        this.commentMap = commentMap;
+        
         endDate= new Date();
         startDate=comments.get(comments.size()-1).getDateCreated();
         this.jLabelUserName.setText(comments.get(0).getCreatedBy()+":");
@@ -459,8 +460,10 @@ public class JPanelUserComments extends javax.swing.JPanel {
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     int parentID = (int) table.getValueAt(row, 6);
-                    ArrayList<Comment> lastTwoComments = SearchHelper.getTopTwoCommentsByParent(parentID);
+                    ArrayList<Comment> lastTwoComments = commentMap.getOrDefault(parentID, new ArrayList<>());
 
+//                    ArrayList<Comment> lastTwoComments = commentMap.get(parentID);//SearchHelper.getTopTwoCommentsByParent(parentID);
+                    
                     // Apply borders to all sides of the cell
                     label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
                     if (column != 4) {
