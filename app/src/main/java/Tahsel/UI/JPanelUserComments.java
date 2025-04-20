@@ -132,6 +132,7 @@ public class JPanelUserComments extends javax.swing.JPanel {
         jLabel1.setText("- Çæ -");
 
         jButton2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(102, 102, 255));
         jButton2.setText("Çáßá");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,35 +472,44 @@ public class JPanelUserComments extends javax.swing.JPanel {
                     } else {
                         label.setHorizontalAlignment(SwingConstants.RIGHT);
                     }
-//                    if(column ==11){
-                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
-                            if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
-                                label.setBackground(new Color(128, 0, 128));
-                            }
-                        }
-                        else{
-                            label.setBackground(table.getBackground());
-                            label.setForeground(table.getForeground());
+                    
+                    if((!lastTwoComments.isEmpty()) && lastTwoComments.size()>=2){
+                        if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){  
+//                            System.out.println(lastTwoComments.size()+"       "+lastTwoComments.get(0).getRemaining()+"   "+lastTwoComments.get(1).getRemaining());
 
+                            label.setBackground(new Color(232,165,232));
                         }
-//                    }
+                    }
+                    else{
+                        label.setBackground(table.getBackground());
+//                        label.setForeground(table.getForeground());
+
+                    }
+                    
 
                     // Maintain selection styling
                     if (isSelected) {
                         label.setBackground(table.getSelectionBackground());
                         label.setForeground(table.getSelectionForeground());
-                    } else {
-                        if(!lastTwoComments.isEmpty() && lastTwoComments.size()==2){
-                            if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){                                
-                                label.setBackground(new Color(227, 172, 227));
-                            }
-                        }
-                        else{
-                            label.setBackground(table.getBackground());
-                            label.setForeground(table.getForeground());
-
-                        }
                     }
+                    else {
+//                        label.setBackground(table.getBackground());
+                        label.setForeground(table.getForeground());
+                    }
+////                        
+//                        if((!lastTwoComments.isEmpty()) && lastTwoComments.size()>=2){
+//                        if(lastTwoComments.get(0).getRemaining()==lastTwoComments.get(1).getRemaining()){  
+//                            System.out.println(lastTwoComments.size()+"       "+lastTwoComments.get(0).getRemaining()+"   "+lastTwoComments.get(1).getRemaining());
+//
+//                            label.setBackground(new Color(128, 0, 128));
+//                        }
+//                    }
+//                    else{
+//                        label.setBackground(table.getBackground());
+//                        label.setForeground(table.getForeground());
+//
+//                    }
+//                    }
 
                     return label;
                 }

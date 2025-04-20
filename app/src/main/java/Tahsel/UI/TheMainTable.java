@@ -176,28 +176,43 @@ jFileChooser1.repaint();
 
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        jButtonAll.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jButtonAll.setText("«·ﬂ·");
+        jButtonAll.setMaximumSize(null);
+        jButtonAll.setPreferredSize(null);
         jButtonAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAllActionPerformed(evt);
             }
         });
 
+        jButtonToCall.setBackground(new java.awt.Color(153, 255, 255));
+        jButtonToCall.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jButtonToCall.setText("« ’«·");
+        jButtonToCall.setMaximumSize(null);
+        jButtonToCall.setPreferredSize(null);
         jButtonToCall.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonToCallActionPerformed(evt);
             }
         });
 
+        jButtonOverDue.setBackground(new java.awt.Color(217, 85, 67));
+        jButtonOverDue.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jButtonOverDue.setText("€Ì— „· “„ » «—ÌŒ «·”œ«œ");
+        jButtonOverDue.setMaximumSize(null);
+        jButtonOverDue.setPreferredSize(null);
         jButtonOverDue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOverDueActionPerformed(evt);
             }
         });
 
+        jButtonUnderCollection.setBackground(new java.awt.Color(222, 205, 135));
+        jButtonUnderCollection.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jButtonUnderCollection.setText(" Õ  «·«‰ Ÿ«—");
+        jButtonUnderCollection.setMaximumSize(null);
+        jButtonUnderCollection.setPreferredSize(null);
         jButtonUnderCollection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonUnderCollectionActionPerformed(evt);
@@ -209,26 +224,26 @@ jFileChooser1.repaint();
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonAll)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonToCall)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonOverDue)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonUnderCollection)
-                .addContainerGap(732, Short.MAX_VALUE))
+                .addGap(0, 477, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonAll, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonOverDue, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonUnderCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonToCall, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(482, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAll)
-                    .addComponent(jButtonToCall)
-                    .addComponent(jButtonOverDue)
-                    .addComponent(jButtonUnderCollection))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jButtonAll, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jButtonToCall, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(jButtonOverDue, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jButtonUnderCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jSplitPane2.setTopComponent(jPanel10);
@@ -354,7 +369,7 @@ jFileChooser1.repaint();
                     .addComponent(jLabel2))
                 .addGap(79, 79, 79)
                 .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(368, Short.MAX_VALUE))
+                .addContainerGap(582, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -426,6 +441,8 @@ jFileChooser1.repaint();
             }
         });
 
+        jButtonDeleteAllComments.setBackground(new java.awt.Color(204, 0, 0));
+        jButtonDeleteAllComments.setForeground(new java.awt.Color(255, 255, 255));
         jButtonDeleteAllComments.setText("Õ–› ﬂ· «· ⁄·Ìﬁ« ");
         jButtonDeleteAllComments.setEnabled(false);
         jButtonDeleteAllComments.addActionListener(new java.awt.event.ActionListener() {
@@ -442,7 +459,7 @@ jFileChooser1.repaint();
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jButtonDeleteAllComments, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonDeleteAllComments, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
@@ -457,7 +474,7 @@ jFileChooser1.repaint();
                 .addGap(49, 49, 49)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE))
+                    .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDownload, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)

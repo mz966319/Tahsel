@@ -183,13 +183,13 @@ public class ParentsDialog extends javax.swing.JDialog {
         }
         else if(this.flag==TheMainTable.OVERDUE){
             this.setTitle("Over Due");
-            this.jPanel.setBackground(Color.RED);
-            this.jTabbedPane.setBackground(Color.RED);
+            this.jPanel.setBackground(new Color(217,85,67));
+            this.jTabbedPane.setBackground(new Color(217,85,67));
         }
         else if(this.flag==TheMainTable.UNDERCOLLECTION){
             this.setTitle("Under Collection");
-            this.jPanel.setBackground(Color.YELLOW);
-            this.jTabbedPane.setBackground(Color.YELLOW);
+            this.jPanel.setBackground(new Color(222,205,135));
+            this.jTabbedPane.setBackground(new Color(222,205,135));
         }
 
     }
